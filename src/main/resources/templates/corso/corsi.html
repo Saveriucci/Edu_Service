@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel ="stylesheet" href="/css/style.css">
+  <head>
+    <title>Buffet</title>
+  </head>
+  <body>
+  <h1> Lista di tutti i Buffet che vengono offerti: </h1>
+  <div  th:each="corso : ${corsi}">
+          <div class = "block" id ="es">
+            <h5 th:text="${corso.nomeCorso}"> Nome </h5>
+            <a th:href = "@{'/corso/' + ${corso.id}}" ></a>
+            <p th:text = "${corso.programmaCorso}"> descrizione del buffet</p>
+            <a  sec:authorize="hasAuthority('admin')"  th:href = "@{'/corso/delete/' + ${corso.id}}">Cancella Corso</a>
+          </div>
+        </div>
+
+  </body>
+</html>
+
+</html>
