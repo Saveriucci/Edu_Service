@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <link rel ="stylesheet" href="/css/style.css">
+   <head th:replace="fragments/vari.html :: headerfiles(title='EsameInfo')"></head>
+   <body background = "/images/sottofondoPerIlResto.jpg"; background-height: 100vh; background-position: center;  background-repeat: no-repeat;  background-size: cover;> 
+   <div th:replace = "fragments/vari.html :: navbar"></div>
+   <div class="vh-100" style="height: 950px;" th:object = "${esame}">
+   <div class="container-fluid">
+   <div class="row content">
+   </div>
+   <div class="col-md-offset-1 col-md-10 content">
+      <div th:if = "${esame.corso}">
+         <h1  class="text-center" th:block th:text = "${esame.nomeEsame}">Nome Esame</h1>
+         <div th:unless = "${esame.corso}">
+            <h1  class="text-center" th:block th:text = "${esame.corso.nomeCorso} + ${esame.corso.cfu} + CFU">Nome Esame</h1>
+         </div>
+         <hr>
+         <h2 class="text-center">Descrizione</h2>
+         <br>
+         <p class="text-center" th:text  ="${esame.descrizioneEsame}">Descrizione</p>
+         <hr>
+         <h2 class="text-center">Esami</h2>
+         <br>
+         <div class="container-fluid">
+            <div class="divTable tabella">
+               <div class="divTableHeading">
+                  <div class="divTableRow">
+                     <div class="divTableHead">
+                        <h3 class ="color">
+                        Data
+                     </div>
+                     <div class="divTableHead">
+                        <h3 class ="color">
+                        Sessione
+                     </div>
+                     <div class="divTableHead">
+                        <h3 class ="color">
+                        Professore
+                     </div>
+                  </div>
+               </div>
+               <div class="divTableBody" >
+                  <div class="divTableRow">
+                     <div class="divTableCell">
+                        <div th:if = "${esame.dataEsame != null}">
+                           <p th:text = "${esame.dataEsame}"> data</p>
+                        </div>
+                        <div th:unless = "${esame.dataEsame != null}">
+                           <p> data non ancora prensente</p>
+                           <a sec:authorize= "hasAuthority('admin')" th:href="@{'/esame/edit/' + ${esame.id}}";>
+                              <p> aggiungi Data</p>
+                           </a>
+                        </div>
+                     </div>
+                     <div class="divTableCell">
+                        <div th:if = "${esame.tipoSessione != null}">
+                           <p  th:text = "${esame.tipoSessione}"> Sessione</p>
+                        </div>
+                        <div th:unless = "${esame.tipoSessione != null}">
+                           <p> sessione non ancora prensente</p>
+                           <a sec:authorize= "hasAuthority('admin')" th:href="@{'/esame/edit/' + ${esame.id}}";>
+                              <p> aggiungi Sessione</p>
+                           </a>
+                        </div>
+                     </div>
+                     <div class="divTableCell">
+                        <div th:if = "${esame.professore != null}">
+                           <a th:href="@{'/professore/' + ${esame.professore.id}}";>
+                              <p th:text = "${esame.professore.cognomeProfessore}"> Professore</p>
+                           </a>
+                        </div>
+                        <div th:unless = "${esame.professore != null}">
+                           <p div = "text-right"> professore non ancora prensente</p>
+                           <a sec:authorize= "hasAuthority('admin')" th:href="@{'/esame/edit/' + ${esame.id}}";>
+                              <p> aggiungi Professore</p>
+                           </a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <hr>
+         <div class="d-flex justify-content-center">
+            <a sec:authorize= "hasAuthority('admin')" th:href = "@{'/esame/delete/' + ${esame.id}}" role= "button" class="btn btn-danger btn-block btn-lg gradient-custom-4 text-body">Cancella questo Esame</a>
+         </div>
+         <div class="d-flex justify-content-center">
+            <a sec:authorize= "hasAuthority('admin')" th:href = "@{'/esame/edit/' + ${esame.id}}" role= "button" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Modifica questo Esame</a>
+         </div>
+      </div>
+   </div>
+   <div th:replace = "fragments/vari.html :: footer"></div>
+   </body>
+</html>

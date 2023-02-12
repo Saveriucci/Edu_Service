@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <link rel ="stylesheet" href="/css/style.css">
+   <head th:replace="fragments/vari.html :: headerfiles(title='StudenteAvviso')"></head>
+   <body background = "/images/sottofondoPerIlResto.jpg"; background-height: 100vh; background-position: center;  background-repeat: no-repeat;  background-size: cover;> 
+   <div th:replace = "fragments/vari.html :: navbar"></div>
+   <div class="vh-100" style="height: 950px;" th:object = "${studente}">
+      <center>
+         <h1>ATTENZIONE! </h1>
+         <h1 color = "red">CANCELLARE UNO STUDENTE EQUIVALE AD ELIMINARLO DAL DATABASE!</h1>
+         <h1 color = "red">SI ELIMINERA' TUTTA LA SUA STORIA UNIVERSITARIA! </h1>
+         <h1 color = "red">VUOI PROSEGUIRE? </h1>
+         <a th:href = "@{'/studente/delete/' + ${studente.id}}" class="btn btn-danger">Cancella studente</a>
+         <a th:href = "@{'/studente/' + ${studente.id}}" class="btn btn-success">Torna allo studente</a>
+      </center>
+   </div>
+   <div th:replace = "fragments/vari.html :: footer"></div>
+   </body>
+</html>

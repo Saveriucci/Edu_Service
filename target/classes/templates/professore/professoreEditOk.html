@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <link rel ="stylesheet" href="/css/style.css">
+   <head th:replace="fragments/vari.html :: headerfiles(title='ProfessoreEditOk')"></head>
+   <body background = "/images/sottofondoPerIlResto.jpg"; background-height: 100vh; background-position: center;  background-repeat: no-repeat;  background-size: cover;> 
+   <div th:replace = "fragments/vari.html :: navbar"></div>
+   <div class="vh-100" style="height: 950px;" th:object = "${professore}">
+      <center>
+         <h1>Caricamento Avvenuto Con Successo! </h1>
+         <a th:href = "@{'/professore/' + ${professore.id}}" class="btn btn-success">Torna al Professore</a>
+      </center>
+   </div>
+   <div th:replace = "fragments/vari.html :: footer"></div>
+   </body>
+</html>

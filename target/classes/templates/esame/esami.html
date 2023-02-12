@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <link rel ="stylesheet" href="/css/style.css">
+   <head th:replace="fragments/vari.html :: headerfiles(title='EsamiInfo')"></head>
+   <body background = "/images/sottofondoPerIlResto.jpg"; background-height: 100vh; background-position: center;  background-repeat: no-repeat;  background-size: cover;> 
+   <div th:replace = "fragments/vari.html :: navbar"></div>
+   <div class="vh-100" style="height: 950px;" th:object = "${esami}">
+   <center>
+      <div th:each = "esame :${esami}">
+         <!-- Card -->
+         <div class="container-fluid">
+            <div class = "card">
+               <div class="card-body">
+                  <h1 class="card-title" th:text = "${esame.nomeEsame}">Nome Esami</h1>
+                  <p class="card-text" th:text = "${esame.descrizioneEsame}">Descrizione</p>
+                  <a sec:authorize= "hasAuthority('admin')" th:href = "@{'/esame/edit/' + ${esame.id}}" class="btn btn-success">Modifica L' Esame</a>
+                  <a th:href = "@{'/esame/' + ${esame.id}}" class="btn btn-success">Visualizza di Piu</a>
+                  <div sec:authorize= "hasAuthority('generic')">
+                     <div th:if = " ${!esamiStudente.contains(esame)}">
+                        <a  th:href = "@{'/studente/prenota/' + ${studente.id} + '/' + ${esame.id}}" class="btn btn-success">Prenota</a>	
+                     </div>
+                     <div  th:unless = " ${!esamiStudente.contains(esame)}">
+                        <p class="card-text" >Esame gia prenotato</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </center>
+   <div th:replace = "fragments/vari.html :: footer"></div>
+   </body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <link rel ="stylesheet" href="/css/style.css">
+   <head th:replace="fragments/vari.html :: headerfiles(title='Homepage')"></head>
+   <body background = "/images/sottofondoPerIlResto.jpg"; background-height: 100vh; background-position: center;  background-repeat: no-repeat;  background-size: cover;> 
+   <div th:replace = "fragments/vari.html :: navbar"></div>
+   <div class="h-100 d-inline-block" style="height: 950px;">
+      <div th:if="${!(user.role == 'admin')}">
+         <h1> I Tuoi Esami Prenotati: </h1>
+         <div th:if="${!esami.isEmpty()}">
+            <div class="container-fluid">
+               <div class="divTable tabella">
+                  <div class="divTableHeading">
+                     <div class="divTableRow">
+                        <div class="divTableHead">
+                           <h3 class ="color">
+                           Esame
+                        </div>
+                        <div class="divTableHead">
+                           <h3 class ="color">
+                           Data
+                        </div>
+                        <div class="divTableHead">
+                           <h3 class ="color">
+                           Sessione
+                        </div>
+                        <div class="divTableHead">
+                           <h3 class ="color">
+                           Professore
+                        </div>
+                     </div>
+                  </div>
+                  <div class="divTableBody" >
+                     <div class="divTableRow" th:each =" esame : ${esami}">
+                        <div class="divTableCell">
+                           <p  th:text = "${esame.nomeEsame}"> Esame</p>
+                        </div>
+                        <div class="divTableCell">
+                           <div th:if = "${esame.dataEsame != null}">
+                              <p th:text = "${esame.dataEsame}"> data</p>
+                           </div>
+                           <div th:unless = "${esame.dataEsame != null}">
+                              <p> data non ancora prensente</p>
+                           </div>
+                        </div>
+                        <div class="divTableCell">
+                           <div th:if = "${esame.tipoSessione != null}">
+                              <p  th:text = "${esame.tipoSessione}"> Sessione</p>
+                           </div>
+                           <div th:unless = "${esame.tipoSessione != null}">
+                              <p> sessione non ancora prensente</p>
+                           </div>
+                        </div>
+                        <div class="divTableCell">
+                           <div th:if = "${esame.professore != null}">
+                              <p th:text = "${esame.professore.cognomeProfessore}"> Professore</p>
+                           </div>
+                           <div th:unless = "${esame.professore != null}">
+                              <p div = "text-right"> professore non ancora prensente</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <center>
+                  <a th:href = "@{'/studente/' + ${studente.id}}" class="btn btn-success">vai al tuo Profilo</a>
+                  <a th:href = "@{'/studente/prenota/' + ${studente.id}}" class="btn btn-success">Prenota Esami</a>
+                  <center>
+               </div>
+               <div th:unless="${!esami.isEmpty()}">
+                  <h4>
+                  Non hai esami prenotati</h1>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div th:unless = "${!(user.role == 'admin')}">
+         <h1> Bentornato Amministratore, cosa vuoi fare? </h1>
+         <div class="list-group d-inline">
+            <h3 class="list-group-item list-group-item-action active">Inserimento </h3>
+            <a th:href = "@{/dipartimento/add/}" class="list-group-item list-group-item-action">Inserire un Dipartimento</a>
+            <a th:href = "@{/corso/add/}" class="list-group-item list-group-item-action">Inserire un Corso</a>
+            <a th:href = "@{/esame/add/}" class="list-group-item list-group-item-action">Inserire un Esame</a>
+            <a th:href = "@{/professore/add/}" class="list-group-item list-group-item-action">Inserire un Professore</a>
+         </div>
+         <div class="list-group d-inline" style="margin-top:5px">
+            <h3 class="list-group-item list-group-item-action active">Modifica </h3>
+            <a th:href = "@{/dipartimento/}" class="list-group-item list-group-item-action">Modifica un Dipartimento</a>
+            <a th:href = "@{/corso/}" class="list-group-item list-group-item-action">Modifica un Corso</a>
+            <a th:href = "@{/esame/}" class="list-group-item list-group-item-action">Modifica un Esame</a>
+            <a th:href = "@{/professore/}" class="list-group-item list-group-item-action">Modifica un Professore</a>
+         </div>
+         <div class="list-group d-inline" style="margin-top:5px">
+            <h3 class="list-group-item list-group-item-action active">Cancella </h3>
+            <a th:href = "@{/dipartimento/delete/form/}" class="list-group-item list-group-item-action">Cancella un Dipartimento</a>
+            <a th:href = "@{/corso/delete/form/}" class="list-group-item list-group-item-action">Cancella un Corso</a>
+            <a th:href = "@{/esame/delete/form/}" class="list-group-item list-group-item-action">Cancella un Esame</a>
+            <a th:href = "@{/professore/delete/form/}" class="list-group-item list-group-item-action">Cancella un Professore</a>
+         </div>
+         <div class="list-group d-inline" style="margin-top:5px">
+            <h3 class="list-group-item list-group-item-action active">Gestisci Studenti </h3>
+            <a th:href = "@{/studente/}" class="list-group-item list-group-item-action">Visualizza tutti gli Studenti</a>
+            <a th:href = "@{/studente/add/}" class="list-group-item list-group-item-action">Inserisci uno studente</a>
+            <a th:href = "@{/studente/delete/form/}" class="list-group-item list-group-item-action">Cancella uno Studente</a>
+         </div>
+      </div>
+   </div>
+   <div th:replace = "fragments/vari.html :: footer"></div>
+   </body>
+</html>

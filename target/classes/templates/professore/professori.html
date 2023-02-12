@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <link rel ="stylesheet" href="/css/style.css">
+   <head th:replace="fragments/vari.html :: headerfiles(title='ProfessoriInfo')"></head>
+   <body background = "/images/sottofondoPerIlResto.jpg"; background-height: 100vh; background-position: center;  background-repeat: no-repeat;  background-size: cover;> 
+   <div th:replace = "fragments/vari.html :: navbar"></div>
+   <div class="vh-100" style="height: 950px;" th:object = "${professori}">
+      <center>
+         <div th:each = "professore :${professori}">
+            <!-- Card -->
+            <div class="container-fluid">
+               <div class = "card">
+                  <div class="card-body">
+                     <h1 class="card-title" th:text = "${professore.cognomeProfessore}">Cognome Professore</h1>
+                     <p class="card-text" th:text = "${professore.nomeProfessore}">nome Professore</p>
+                     <a sec:authorize= "hasAuthority('admin')" th:href = "@{'/professore/edit/' + ${professore.id}}" class="btn btn-success">Modifica</a>
+                     <a th:href = "@{'/professore/' + ${professore.id}}" class="btn btn-success">Visualizza di Piu</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+   </div>
+   </center>
+   <div th:replace = "fragments/vari.html :: footer"></div>
+   </body>
+</html>
