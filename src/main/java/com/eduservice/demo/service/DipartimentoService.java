@@ -60,6 +60,6 @@ public class DipartimentoService {
 	public void saveCorso(Corso corso, Long idDipartimento) {
 		Dipartimento dipartimento = dipartimentoRepository.findById(idDipartimento).get();
 		dipartimento.getCorsi().add(corso);
-		this.updateDipartimento(dipartimento);
+		dipartimentoRepository.save(dipartimento);
 	}
 }

@@ -6,3 +6,53 @@ p.text-success {
 #errori{
 	color:red;
 }
+
+hr{
+	border:1px solid blue;
+}
+
+p {
+  font-size: 20px;
+}
+
+hr{
+	width = "95%";
+}
+
+#bordo{
+	border:1px solid blue;
+}
+
+
+.color{
+	color: red;
+}
+
+
+div.tabella {
+  border: 0px solid #1C6EA4;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.divTable.tabella .divTableCell, .divTable.tabella .divTableHead {
+  border: 0px solid #AA8314;
+  padding: 10px 1px;
+}
+
+.divTable.tabella .divTableHeading .divTableHead {
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+.tabella .tableFootStyle {
+  font-size: 14px;
+}
+/* DivTable.com */
+.divTable{ display: table; }
+.divTableRow { display: table-row; }
+.divTableHeading { display: table-header-group;}
+.divTableCell, .divTableHead { display: table-cell;}
+.divTableHeading { display: table-header-group;}
+.divTableFoot { display: table-footer-group;}
+.divTableBody { display: table-row-group;}

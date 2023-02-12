@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel ="stylesheet" href="/css/style.css">
-<head th:replace="fragments/vari.html :: headerfiles(title='DipartimentoEditOk')"></head>
+<head th:replace="fragments/vari.html :: headerfiles(title='DipartimentoEditErrore')"></head>
 
 <body background = "/images/sottofondoPerIlResto.jpg"; background-height: 100vh; background-position: center;  background-repeat: no-repeat;  background-size: cover;> 
 	
@@ -10,7 +10,7 @@
 	
 	<div class="vh-100" style="height: 950px;" th:object = "${dipartimento}">
 		
-		<center><h1>Caricamento Avvenuto Con Successo! </h1>
+		<center><h1 id = "errori">L' aggiornamento del Dipartimento NON HA AVUTO SUCCESSO! </h1>
 			<a th:href = "@{'/dipartimento/' + ${dipartimento.id}}" class="btn btn-success">Torna al Dipartimento</a>
 			</center>
 	    

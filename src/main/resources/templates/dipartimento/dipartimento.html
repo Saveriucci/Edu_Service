@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel ="stylesheet" href="/css/style.css">
+<head th:replace="fragments/vari.html :: headerfiles(title='DipartimentoInfo')"></head>
+
+<body background = "/images/sottofondoPerIlResto.jpg"; background-height: 100vh; background-position: center;  background-repeat: no-repeat;  background-size: cover;> 
+	
+
+	<div th:replace = "fragments/vari.html :: navbar"></div>
+	
+	<div class="vh-100" style="height: 950px;" th:object = "${dipartimento}">
+			
+		<div class="container-fluid">
+		  <div class="row content">
+		    </div>
+			
+			 <div class="col-md-offset-1 col-md-10 content">
+		     <h1  class="text-center" th:block th:text = "${dipartimento.nomeDipartimento}">Nome Dipartimento</h1>
+		     <hr>
+			      
+			  <h2 class="text-center">Corsi</h2><br>
+			  <div class="container-fluid">   
+				<div class="divTable tabella">
+					<div class="divTableHeading">
+						<div class="divTableRow">
+						<div class="divTableHead"><h3 class ="color">Nome Corso</div>
+						<div class="divTableHead"><h3 class ="color">CFU</div>
+					</div>
+				</div>
+					<div class="divTableBody" >
+						<div class="divTableRow" th:each =" corso : ${corsi}">
+						<div class="divTableCell">
+							<div th:if = "${corso.nomeCorso != null}">
+								<a th:href="@{'/corso/' + ${corso.id}}";><p th:text = "${corso.nomeCorso}"> Corso</p></a>
+							</div>
+						</div>
+						<div class="divTableCell">
+							<div th:if = "${corso.cfu != null}">
+								<p  th:text = "${corso.cfu} + CFU"> CFU</p>
+							</div>
+						</div>						
+					</div>
+				</div>   		     
+		  	</div>
+		</div>
+		<hr>  
+		<div class="d-flex justify-content-center">
+			<a sec:authorize= "hasAuthority('admin')" th:href = "@{'/dipartimento/delete/' + ${dipartimento.id}}" role= "button" class="btn btn-danger btn-block btn-lg gradient-custom-4 text-body">Cancella il dipartimento</a>
+		</div>	
+		<div class="d-flex justify-content-center">
+			<a sec:authorize= "hasAuthority('admin')" th:href = "@{'/dipartimento/edit/' + ${dipartimento.id}}" role= "button" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Modifica il dipartimento</a>
+		</div>			
+				
+	</div>
+			
+	<div th:replace = "fragments/vari.html :: footer"></div>
+
+</body>
+    
+</html>

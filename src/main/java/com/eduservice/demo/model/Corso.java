@@ -32,7 +32,7 @@ public class Corso {
 	
 	@OneToMany(mappedBy = "corso", cascade = CascadeType.ALL)
 	private List<Esame> esami;
-
+	
 	public Corso() {
 		this.esami = new LinkedList<Esame>();
 	}
@@ -76,7 +76,7 @@ public class Corso {
 	public void setEsami(List<Esame> esami) {
 		this.esami = esami;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		return this.getNomeCorso().hashCode();

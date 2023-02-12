@@ -1,60 +1,53 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<head th:fragment="headerfiles(title)">
-	  <title th:text="${title}"></title>	
-	  
-	  <meta charset="utf-8">
-	  
-	  <meta name="viewport" content="width=device-width, initial-scale=1">
-	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	  
-	  <link rel ="stylesheet" href="/css/style.css">
-	  <style>
-	  	.navbar {
-	      margin-bottom: 0;
-	      border-radius: 0;
-	    }
-	    
-	  footer {
-      	background-color: #555;
-      	padding: 15px;
-	  }
-	    
-	  </style>
-</head>
-
-<body>
-	<div th:fragment = "navbar">
-		<nav class="navbar navbar-inverse">
-		  <div class="container-fluid">
-		    <div class="navbar-header">
-		      <a class="navbar-brand" href="#">Logo</a>
-		    </div>
-		    <div class="collapse navbar-collapse" id="myNavbar">
-		      <ul class="nav navbar-nav">
-		        <li class="active"><a th:href="@{/default/}">Home</a></li>
-		        <li><a th:href="@{/esame/}";>Esami</a></li>
-		        <li><a th:href="@{/corso/}";>Corsi</a></li>
-		        <li><a th:href="@{/dipartimento/}";>Dipartimenti</a></li>
-		      </ul>
-		      <ul class="nav navbar-nav navbar-right">
-		        <li><a th:href="@{/logout/}";><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
-		      </ul>
-		    </div>
-		  </div>
-		</nav>
-	</div>
-	
-	<div th:fragment = "footer" >
-		<footer class="container-fluid text-center">
-	 	 <p class="text-success" >Thomas </p>
-	 	 <p class="text-success" >Farinelli</p>
-	 	 <p class="text-success" >546712</p>
-		</footer>
-	</div>
-
-</body>
-
+   <head th:fragment="headerfiles(title)">
+      <title th:text="${title}"></title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <link rel ="stylesheet" href="/css/style.css">
+      <style>
+         .navbar {
+         margin-bottom: 0;
+         border-radius: 0;
+         }
+         footer {
+         position: absolute;
+         bottom: 0;
+         width: 100%;
+         height: 50px;
+         background-color: #555;
+         padding: 15px;
+         }
+      </style>
+   </head>
+   <body>
+      <div th:fragment = "navbar">
+         <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+               <div class="collapse navbar-collapse" id="myNavbar">
+                  <ul class="nav navbar-nav">
+                     <li class="active"><a th:href="@{/default/}">Home</a></li>
+                     <li><a th:href="@{/esame/}";>Esami</a></li>
+                     <li><a th:href="@{/corso/}";>Corsi</a></li>
+                     <li><a th:href="@{/dipartimento/}";>Dipartimenti</a></li>
+                     <li><a th:href="@{/professore/}";>Professori</a></li>
+                     <li><a sec:authorize= "hasAuthority('admin')" th:href="@{/studente/}";>Studenti</a></li>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                     <li><a th:href="@{/logout/}";><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+                  </ul>
+               </div>
+            </div>
+         </nav>
+      </div>
+      <div th:fragment = "footer" >
+         <footer class="container-fluid text-center">
+            <p class="text-success" >Thomas </p>
+            <p class="text-success" >Farinelli</p>
+            <p class="text-success" >546712</p>
+         </footer>
+      </div>
+   </body>

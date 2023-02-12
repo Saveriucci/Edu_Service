@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.eduservice.demo.model.Studente;
 import com.eduservice.demo.model.Utente;
+import com.eduservice.demo.service.EsameService;
 import com.eduservice.demo.service.StudenteService;
 import com.eduservice.demo.service.UtenteService;
 import com.eduservice.demo.validator.UtenteValidator;
@@ -29,9 +31,10 @@ public class UtenteController {
 	private StudenteService studenteService;
 
 	@Autowired
+	private EsameService esameService;
+
+	@Autowired
 	private UtenteValidator utenteValidator;
-	
-	public static Utente utente;
 
 
 	@GetMapping("/register")
@@ -69,12 +72,16 @@ public class UtenteController {
 		//richiedo  l username dopo il login
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-		utente = utenteService.findByUsername(Integer.valueOf(auth.getName()));
-		
+		Utente utente = utenteService.findByUsername(Integer.valueOf(auth.getName()));
+		Studente studente = studenteService.findByMatricola(utente.getUsername());
+
+
 		//getname() = username (stringa)
 		//integer.valueOf = numero trasformato da una stringa
 		model.addAttribute("user", utente);
-		model.addAttribute("studente", studenteService.findByMatricola(Integer.valueOf(auth.getName())));
+		model.addAttribute("studente", studente);
+		if(studente != null)
+			model.addAttribute("esami", esameService.findEsamiByIdStudente(studente.getId()));
 		return "index";
 
 	}

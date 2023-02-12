@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel ="stylesheet" href="/css/style.css">
-<head th:replace="fragments/vari.html :: headerfiles(title='DipartimentiInfo')"></head>
+<head th:replace="fragments/vari.html :: headerfiles(title='DipartimentiDelete')"></head>
 
 <body background = "/images/sottofondoPerIlResto.jpg"; background-height: 100vh; background-position: center;  background-repeat: no-repeat;  background-size: cover;> 
 	
@@ -15,8 +15,7 @@
 			  <div class = "card">
 				  <div class="card-body">
 				    <h1 class="card-title" th:text = "${dipartimento.nomeDipartimento}">Nome Dipartimento</h1>
-				    <a sec:authorize= "hasAuthority('admin')" th:href = "@{'/dipartimento/edit/' + ${dipartimento.id}}" class="btn btn-success">Modifica il Corso</a>
-				    <a  th:href = "@{'/dipartimento/' + ${dipartimento.id}}" class="btn btn-success">Visualizza di Piu</a>
+				    <a sec:authorize= "hasAuthority('admin')" th:href = "@{'/dipartimento/delete/' + ${dipartimento.id}}" class="btn btn-danger">Cancella il Corso</a>
 				  </div>
 				</div>
 			</div>

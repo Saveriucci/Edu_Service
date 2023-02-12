@@ -15,6 +15,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 public class Esame {
 
@@ -27,9 +29,10 @@ public class Esame {
 	
 	@NotBlank
 	@Size(min = 1, max = 100)
-	private String DescrizioneEsame;
+	private String descrizioneEsame;
 	
 	@NotNull
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dataEsame;
 	
 	@NotBlank
@@ -66,11 +69,11 @@ public class Esame {
 	}
 
 	public String getDescrizioneEsame() {
-		return DescrizioneEsame;
+		return descrizioneEsame;
 	}
 
 	public void setDescrizioneEsame(String descrizioneEsame) {
-		DescrizioneEsame = descrizioneEsame;
+		this.descrizioneEsame = descrizioneEsame;
 	}
 
 	public Date getDataEsame() {

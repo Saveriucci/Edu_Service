@@ -91,4 +91,38 @@ public class EsameService {
 	public boolean existsByNomeEsameAndTipoSessioneAndDataEsame( String nomeEsame, String tipoSessione, Date dataEsame) {
 		return esameRepository.existsByNomeEsameAndTipoSessioneAndDataEsame(nomeEsame, tipoSessione, dataEsame);
 	}
+
+	public void removeElement(Corso corso, Esame esame) {
+		esame.setCorso(null);
+		esameRepository.save(esame);
+	}
+	
+	public void removeElement(Professore professore, Esame esame) {
+		esame.setCorso(null);
+		esameRepository.save(esame);
+	}
+
+	public void addCorso(Esame esame, Corso corso) {
+		esame.setCorso(corso);
+		esameRepository.save(esame);
+	}
+
+	public List<Esame> findEsamiByIdStudente(Long id) {
+		List<Esame> esami = new LinkedList<Esame>();
+		for( Esame esame: this.findAll()) {
+			for(Studente studente: esame.getStudenti()) {
+				if(studente.getId() == id)
+					esami.add(esame);
+			}
+		}
+		return esami;
+	}
+
+	public void emptyEsami(Long idCorso) {
+		for( Long idEsame : esameRepository.trovaEsamiConIdCorso(idCorso)) {
+			this.findById(idEsame).setCorso(null);
+			this.saveEsame(this.findById(idEsame));
+		}
+	}
+
 }

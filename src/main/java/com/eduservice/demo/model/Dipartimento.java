@@ -1,5 +1,6 @@
 package com.eduservice.demo.model;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -22,6 +23,10 @@ public class Dipartimento {
 	
 	@OneToMany( cascade = CascadeType.ALL)
 	private List<Corso> corsi;
+	
+	public Dipartimento() {
+		this.corsi = new LinkedList<Corso>();
+	}
 
 	public Long getId() {
 		return id;

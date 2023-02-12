@@ -43,12 +43,8 @@ public class ProfessoreService {
 		professoreRepository.save(professoreUpdate);
 	}
 	
-	public boolean existsByNomeProfessoreAndCognomeProfessore( String nomeProfessore, String cognomeProfessore) {
-		return professoreRepository.existsByNomeProfessoreAndCognomeProfessore( nomeProfessore, cognomeProfessore);
-	}
-	
-	public Professore findByNomeProfessoreAndCognomeProfessore( String nomeProfessore, String cognomeProfessore) {
-		return professoreRepository.findByNomeProfessoreAndCognomeProfessore( nomeProfessore, cognomeProfessore);
+	public Professore findByCognomeProfessore(String cognomeProfessore) {
+		return professoreRepository.findByCognomeProfessore(cognomeProfessore);
 	}
 	
 	public Professore findById( Long id) {
@@ -67,5 +63,9 @@ public class ProfessoreService {
 		Professore professore = professoreRepository.findById(idProfessore).get();
 		professore.getEsami().add(esame);
 		this.updateProfessore(professore);
+	}
+
+	public boolean existsByCognomeProfessore(String cognomeProfessore) {
+		return professoreRepository.existsByCognomeProfessore(cognomeProfessore);
 	}
 }

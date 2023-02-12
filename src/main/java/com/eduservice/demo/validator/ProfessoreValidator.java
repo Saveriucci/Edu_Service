@@ -24,7 +24,7 @@ public class ProfessoreValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		Professore professore = (Professore) target;
 		
-		if( professoreService.existsByNomeProfessoreAndCognomeProfessore(professore.getNomeProfessore(), professore.getCognomeProfessore())) {
+		if( professoreService.existsByCognomeProfessore(professore.getCognomeProfessore())) {
 			errors.reject("professore.duplicato");
 		}
 	}

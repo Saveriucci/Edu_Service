@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
    <link rel ="stylesheet" href="/css/style.css">
-   <head th:replace="fragments/vari.html :: headerfiles(title='CorsiInfo')"></head>
+   <head th:replace="fragments/vari.html :: headerfiles(title='CancellaEsame')"></head>
    <body background = "/images/sottofondoPerIlResto.jpg"; background-height: 100vh; background-position: center;  background-repeat: no-repeat;  background-size: cover;> 
    <div th:replace = "fragments/vari.html :: navbar"></div>
-   <div class="vh-100" style="height: 950px;" th:object = "${corsi}">
+   <div class="vh-100" style="height: 950px;" th:object = "${esami}">
       <center>
-         <div th:each = "corso :${corsi}">
+         <div th:each = "esame :${esami}">
             <!-- Card -->
             <div class="container-fluid">
                <div class = "card">
                   <div class="card-body">
-                     <h1 class="card-title" th:text = "${corso.nomeCorso}">Nome Corso</h1>
-                     <p class="card-text" th:text = "${corso.cfu} + CFU">CFU</p>
-                     <a sec:authorize= "hasAuthority('admin')" th:href = "@{'/corso/edit/' + ${corso.id}}" class="btn btn-success">Modifica il Corso</a>
-                     <a th:href = "@{'/corso/' + ${corso.id}}" class="btn btn-success">Visualizza di Piu</a>
+                     <h1 class="card-title" th:text = "${esame.nomeEsame}">Nome Esame</h1>
+                     <p class="card-text" th:text = "${esame.descrizioneEsame}">Descrizione</p>
+                     <a sec:authorize= "hasAuthority('admin')" th:href = "@{'/esame/delete/' + ${esame.id}}" class="btn btn-danger">cancella L' Esame</a>
                   </div>
                </div>
             </div>

@@ -40,7 +40,7 @@ public class CorsoService {
 		corsoUpdate.setNomeCorso(corso.getNomeCorso());
 		corsoUpdate.setProgrammaCorso(corso.getProgrammaCorso());
 		corsoUpdate.setEsami(corso.getEsami());
-		this.corsoRepository.save(corsoUpdate);
+		corsoRepository.save(corsoUpdate);
 	}
 	
 	public boolean existsByNomeCorso( String nomeCorso) {
@@ -62,7 +62,12 @@ public class CorsoService {
 	public void saveEsame(Esame esame, Long idCorso) {
 		Corso corso = corsoRepository.findById(idCorso).get();
 		corso.getEsami().add(esame);
-		this.updateCorso(corso);
+		corsoRepository.save(corso);
 	}
+
+	public Corso findBynomeCorso(String nomeCorso) {
+		return corsoRepository.findByNomeCorso(nomeCorso);
+	}
+
 
 }
