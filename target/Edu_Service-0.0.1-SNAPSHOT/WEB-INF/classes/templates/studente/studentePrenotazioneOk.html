@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <link rel ="stylesheet" href="/css/style.css">
+   <head th:replace="fragments/vari.html :: headerfiles(title='StudentePrenotazioneOk')"></head>
+   <body background = "/images/sottofondoPerIlResto.jpg"; background-height: 100vh; background-position: center;  background-repeat: no-repeat;  background-size: cover;> 
+   <div th:replace = "fragments/vari.html :: navbar"></div>
+   <div class="vh-100" style="height: 950px;" th:object = "${studente}">
+      <center>
+         <h1 color = "green">L' Esame e' stato prenotato con successo!</h1>
+         <a th:href = "@{'/studente/' + ${studente.id}}" class="btn btn-success">Torna allo studente</a>
+         <a th:href = "@{'/studente/prenota/' + ${studente.id}}" class="btn btn-success">Prenota altri Esami</a>
+      </center>
+   </div>
+   <div th:replace = "fragments/vari.html :: footer"></div>
+   </body>
+</html>

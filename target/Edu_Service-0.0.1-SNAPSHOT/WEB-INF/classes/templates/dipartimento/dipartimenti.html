@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel ="stylesheet" href="/css/style.css">
+<head th:replace="fragments/vari.html :: headerfiles(title='DipartimentiInfo')"></head>
+
+<body background = "/images/sottofondoPerIlResto.jpg"; background-height: 100vh; background-position: center;  background-repeat: no-repeat;  background-size: cover;> 
+	
+
+	<div th:replace = "fragments/vari.html :: navbar"></div>
+	
+	<div class="vh-100" style="height: 950px;" th:object = "${dipartimenti}">
+		<div th:if = "${!dipartimenti.isEmpty()}">	
+			<center><div th:each = "dipartimento :${dipartimenti}">
+					<div class="container-fluid">
+					  <div class = "card">
+						  <div class="card-body">
+						    <h1 class="card-title" th:text = "${dipartimento.nomeDipartimento}">Nome Dipartimento</h1>
+						    <a sec:authorize= "hasAuthority('admin')" th:href = "@{'/dipartimento/edit/' + ${dipartimento.id}}" class="btn btn-success">Modifica il Dipartimneto</a>
+						    <a  th:href = "@{'/dipartimento/' + ${dipartimento.id}}" class="btn btn-success">Visualizza di Piu</a>
+						  </div>
+						</div>
+					</div></center>
+				</div>
+				<div th;unless ="${!dipartimenti.isEmpty()}">	
+		      	<center>
+		      		<h1> non ci sono Dipartimenti </h1>
+		      		<a sec:authorize= "hasAuthority('admin')" th:href = "@{/default/}" class="btn btn-success">Tona alla HomePage</a>
+		      	</center>
+		      </div>					
+		</div>		
+	<div th:replace = "fragments/vari.html :: footer"></div>
+
+</body>
+    
+</html>

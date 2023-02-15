@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel ="stylesheet" href="/css/style.css">
+<head th:replace="fragments/vari.html :: headerfiles(title='DipartimentiDelete')"></head>
+
+<body background = "/images/sottofondoPerIlResto.jpg"; background-height: 100vh; background-position: center;  background-repeat: no-repeat;  background-size: cover;> 
+	
+
+	<div th:replace = "fragments/vari.html :: navbar"></div>
+	
+	<div class="vh-100" style="height: 950px;" th:object = "${dipartimenti}">
+	<center><div th:each = "dipartimento :${dipartimenti}">
+					<!-- Card -->
+			<div class="container-fluid">
+			  <div class = "card">
+				  <div class="card-body">
+				    <h1 class="card-title" th:text = "${dipartimento.nomeDipartimento}">Nome Dipartimento</h1>
+				    <a sec:authorize= "hasAuthority('admin')" th:href = "@{'/dipartimento/delete/' + ${dipartimento.id}}" class="btn btn-danger">Cancella il Corso</a>
+				  </div>
+				</div>
+			</div>
+		</div>
+	</div></center>
+			
+	<div th:replace = "fragments/vari.html :: footer"></div>
+
+</body>
+    
+</html>

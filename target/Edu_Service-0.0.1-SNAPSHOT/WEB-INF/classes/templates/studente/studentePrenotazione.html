@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <link rel ="stylesheet" href="/css/style.css">
+   <head th:replace="fragments/vari.html :: headerfiles(title='PrenotazioneEsami')"></head>
+   <body background = "/images/sottofondoPerIlResto.jpg"; background-height: 100vh; background-position: center;  background-repeat: no-repeat;  background-size: cover;> 
+   <div th:replace = "fragments/vari.html :: navbar"></div>
+   <div class="h-100 d-inline-block" style="height: 950px;">
+   <h1> Quale esame vuoi prenotare? </h1>
+   <div th:each = " esame : ${esami}">
+      <div class = "container">
+         <div class="list-group d-inline">
+            <h3 class="list-group-item list-group-item-action active" th:text= "${esame.nomeEsame}">Inserimento </h3>
+            <div th:if = " ${!esamiStudente.contains(esame)}">
+            	<div th:if = " ${esame.corso.professore != null}">
+	               <a th:href = "@{'/studente/prenota/' + ${studente.id} + '/' + ${esame.id}}" class="list-group-item list-group-item-action">
+	                  <p th:text=" ${esame.dataEsame} + ' ' +  ${esame.descrizioneEsame} + ' ' + ${esame.tipoSessione} + ' ' + ${esame.corso.professore.cognomeProfessore}">Dati Esame</p>
+	               </a>
+              	</div> 
+              	<div th:unless = " ${esame.corso.professore != null}">
+	               <a th:href = "@{'/studente/prenota/' + ${studente.id} + '/' + ${esame.id}}" class="list-group-item list-group-item-action">
+	                  <p th:th:text=" ${esame.dataEsame} + ' ' + ${esame.descrizioneEsame} + ' ' + ${esame.tipoSessione} + ' Professore ' + 'non ' + 'ancora ' + 'registrato'">Dati Esame</p>
+	               </a>              	
+              	</div>        
+            </div>
+            <div  th:unless = " ${!esamiStudente.contains(esame)}">
+            	<div th:if = " ${esame.corso.professore != null}">
+              		 <p th:text=" ${esame.dataEsame} + ' ' +  ${esame.descrizioneEsame} + ' ' + ${esame.tipoSessione} + ' ' + ${esame.corso.professore.cognomeProfessore}">Dati Esame</p>
+              	</div>
+              	<div th:unless = " ${esame.corso.professore != null}"> 
+              		<p th:text=" ${esame.dataEsame} + ' ' + ${esame.descrizioneEsame} + ' ' + ${esame.tipoSessione} + ' Professore ' + 'non ' + 'ancora ' + 'registrato'">Dati Esame</p>
+              	</div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <center>
+   <a th:href = "@{'/studente/' + ${studente.id}}" class="btn btn-success">vai nella tua scheda personale</a>
+   <a th:href = "@{/default/}" class="btn btn-success">Torna alla Homepage</a>
+   <center>
+   <div th:replace = "fragments/vari.html :: footer"></div>
+   </body>
+</html>
