@@ -34,7 +34,7 @@
                      <li><a th:href="@{/corso/}";>Corsi</a></li>
                      <li><a th:href="@{/dipartimento/}";>Dipartimenti</a></li>
                      <li><a th:href="@{/professore/}";>Professori</a></li>
-                     <li><a sec:authorize= "hasAuthority('admin')" th:href="@{/studente/}";>Studenti</a></li>
+                     <li><a sec:authorize= "hasAuthority('admin')" th:href="@{/studente/}";>Persone</a></li>
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
                      <li><a th:href="@{/logout/}";><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>

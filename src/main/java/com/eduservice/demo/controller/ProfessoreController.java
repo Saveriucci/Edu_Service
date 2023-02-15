@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.eduservice.demo.model.Corso;
 import com.eduservice.demo.model.Professore;
-import com.eduservice.demo.service.EsameService;
+import com.eduservice.demo.service.CorsoService;
 import com.eduservice.demo.service.ProfessoreService;
 import com.eduservice.demo.validator.ProfessoreValidator;
 
@@ -24,7 +25,7 @@ public class ProfessoreController {
 	private ProfessoreService professoreService;
 
 	@Autowired
-	private EsameService esameService;
+	private CorsoService corsoService;
 
 	@Autowired
 	private ProfessoreValidator professoreValidator;
@@ -34,8 +35,9 @@ public class ProfessoreController {
 
 	@GetMapping("/professore/{id}")
 	public String getProfessore( @PathVariable("id") Long id, Model model) {
-		model.addAttribute("professore", professoreService.findById(id));
-		model.addAttribute("esami", professoreService.findById(id).getEsami());
+		Professore professore = professoreService.findById(id);
+		model.addAttribute("professore", professore);
+		model.addAttribute("esami", corsoService.findEsamiByCognomeProfessore(professore));
 		return "professore/professore";
 	}
 
@@ -50,19 +52,19 @@ public class ProfessoreController {
 	@GetMapping("/professore/add/")
 	public String showProfessoreAddForm(Model model) {
 		model.addAttribute("professore", new Professore());
-		model.addAttribute("esami", esameService.findAll());
+		model.addAttribute("corsi", corsoService.findAll());
 		return "professore/professoreAddForm";
 	}
 
 	@PostMapping("/professore/add/")
 	public String aggiungiProfessore( @Valid@ModelAttribute("professore") Professore professore, BindingResult bindingResult,
-			@RequestParam("nomeEsame")String nomeEsame, Model model){
+			@RequestParam("nomeCorso")String nomeCorso, Model model){
 
 		professoreValidator.validate(professore, bindingResult);
 
 		if(!bindingResult.hasErrors()) {
-			if(nomeEsame != null)
-				professore.getEsami().add(esameService.findByNomeEsame(nomeEsame));
+			if(nomeCorso != null)
+				professore.getCorsi().add(corsoService.findByNomeCorso(nomeCorso));
 			professoreService.SaveProfessore(professore);
 			return "professore/professore";
 		}
@@ -78,21 +80,7 @@ public class ProfessoreController {
 		model.addAttribute("singolo", 1); // sto cancellando un signolo professore
 		return "professore/professoreCancellazioneOk";
 	}
-
-	@GetMapping("/professore/delete/")
-	public String deleteAllProfessori(Model model) {
-		professoreService.deleteAllProfessori();
-		model.addAttribute("singolo", 2); //sto cancellando tutti i professori
-		return "professore/professoreCancellazioneOk";
-	}
-
-	@GetMapping("/professore/delete/{idProfessore}/{idEsame}")
-	public String cancellaEsameDalCorso(@PathVariable("idProfessore") Long idProfessore, @PathVariable("idEsame")Long idEsame, Model model) {
-		Professore professore = professoreService.findById(idProfessore);
-		esameService.removeElement(professore, esameService.findById(idEsame));
-		model.addAttribute("singolo", 3); // sto cancellando un esame dalla lista dei corsi
-		return  "corso/corsoCancellazioneOk";
-	}
+	
 
 	@GetMapping("/professore/delete/form/")
 	public String showAllProfessoriDelete( Model model) {
@@ -107,20 +95,22 @@ public class ProfessoreController {
 	@GetMapping("/professore/edit/{id}")
 	public String showProfessoreEditForm(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("professore", professoreService.findById(id));
-		model.addAttribute("esami", esameService.findAll());
+		model.addAttribute("corsi", corsoService.findAll());
 		return "professore/professoreEditForm";
 	}
 
 	@PostMapping("/professore/edit/{id}")
 	public String AggiornaProfessore(@Valid@ModelAttribute("professore") Professore professore,	BindingResult bindingResult, 
-			@RequestParam("nomeEsame") String nomeEsame, Model model) {
+			@RequestParam("nomeCorso") String nomeCorso, Model model) {
 
 		if(!bindingResult.hasErrors()) {
-			if(nomeEsame != null  && esameService.findAll().contains(esameService.findByNomeEsame(nomeEsame))) {
-				professoreService.saveEsame(esameService.findByNomeEsame(nomeEsame), professore.getId());
-				model.addAttribute("professore", professore);
-				return "professore/professoreEditOk";
+			if(nomeCorso != null  && corsoService.findAll().contains(corsoService.findByNomeCorso(nomeCorso))) {
+				Corso corso = corsoService.findBynomeCorso(nomeCorso);
+				corsoService.saveProfessore(professore, corso);
 			}
+			professoreService.updateProfessore(professore);
+			model.addAttribute("professore", professore);
+			return "professore/professoreEditOk";
 		}
 		model.addAttribute("professore", professore);
 		return "professore/professoreEditErrore";

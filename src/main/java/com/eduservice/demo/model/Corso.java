@@ -5,9 +5,11 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -30,8 +32,11 @@ public class Corso {
 	@NotNull
 	private int cfu;
 	
-	@OneToMany(mappedBy = "corso", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "corso", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Esame> esami;
+	
+	@ManyToOne
+	private Professore professore;
 	
 	public Corso() {
 		this.esami = new LinkedList<Esame>();
@@ -77,6 +82,14 @@ public class Corso {
 		this.esami = esami;
 	}
 	
+	public Professore getProfessore() {
+		return professore;
+	}
+
+	public void setProfessore(Professore professore) {
+		this.professore = professore;
+	}
+
 	@Override
 	public int hashCode() {
 		return this.getNomeCorso().hashCode();

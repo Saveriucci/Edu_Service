@@ -6,6 +6,7 @@
    <div th:replace = "fragments/vari.html :: navbar"></div>
    <div class="vh-100" style="height: 950px;" th:object = "${corsi}">
       <center>
+      <div th:id = "${!corsi.isEmpty()}">
          <div th:each = "corso :${corsi}">
             <!-- Card -->
             <div class="container-fluid">
@@ -19,6 +20,13 @@
                </div>
             </div>
          </div>
+      </div>
+      <div th:unless ="${!corsi.isEmpty()}">
+      	<center>
+      		<h1> non ci sono Corsi </h1>
+      		<a sec:authorize= "hasAuthority('admin')" th:href = "@{/default/}" class="btn btn-success">Tona alla HomePage</a>
+      	</center>
+      </div>
    </div>
    </center>
    <div th:replace = "fragments/vari.html :: footer"></div>

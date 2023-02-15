@@ -3,8 +3,8 @@ package com.eduservice.demo.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,12 +24,12 @@ public class Professore {
 	@NotBlank
 	private String cognomeProfessore;
 	
-	@OneToMany(mappedBy = "professore", cascade = CascadeType.ALL)
-	private List<Esame> esami;
+	@OneToMany(mappedBy = "professore", fetch = FetchType.EAGER)
+	private List<Corso> corsi;
 
 	
 	public Professore() {
-		this.esami = new LinkedList<Esame>();
+		this.corsi = new LinkedList<Corso>();
 	}
 
 	public Long getId() {
@@ -55,15 +55,15 @@ public class Professore {
 	public void setCognomeProfessore(String cognomeProfessore) {
 		this.cognomeProfessore = cognomeProfessore;
 	}
-
-	public List<Esame> getEsami() {
-		return esami;
-	}
-
-	public void setEsami(List<Esame> esami) {
-		this.esami = esami;
-	}
 	
+	public List<Corso> getCorsi() {
+		return corsi;
+	}
+
+	public void setCorsi(List<Corso> corsi) {
+		this.corsi = corsi;
+	}
+
 	@Override
 	public int hashCode() {
 		return this.getNomeProfessore().hashCode() + this.getCognomeProfessore().hashCode();

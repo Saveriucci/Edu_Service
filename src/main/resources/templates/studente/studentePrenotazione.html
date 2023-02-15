@@ -11,12 +11,24 @@
          <div class="list-group d-inline">
             <h3 class="list-group-item list-group-item-action active" th:text= "${esame.nomeEsame}">Inserimento </h3>
             <div th:if = " ${!esamiStudente.contains(esame)}">
-               <a th:href = "@{'/studente/prenota/' + ${studente.id} + '/' + ${esame.id}}" class="list-group-item list-group-item-action">
-                  <p th:text=" ${esame.dataEsame} + ${esame.descrizioneEsame} + ${esame.tipoSessione} + ${esame.professore.cognomeProfessore}">Dati Esame</p>
-               </a>
+            	<div th:if = " ${esame.corso.professore != null}">
+	               <a th:href = "@{'/studente/prenota/' + ${studente.id} + '/' + ${esame.id}}" class="list-group-item list-group-item-action">
+	                  <p th:text=" ${esame.dataEsame} + ' ' +  ${esame.descrizioneEsame} + ' ' + ${esame.tipoSessione} + ' ' + ${esame.corso.professore.cognomeProfessore}">Dati Esame</p>
+	               </a>
+              	</div> 
+              	<div th:unless = " ${esame.corso.professore != null}">
+	               <a th:href = "@{'/studente/prenota/' + ${studente.id} + '/' + ${esame.id}}" class="list-group-item list-group-item-action">
+	                  <p th:th:text=" ${esame.dataEsame} + ' ' + ${esame.descrizioneEsame} + ' ' + ${esame.tipoSessione} + ' Professore ' + 'non ' + 'ancora ' + 'registrato'">Dati Esame</p>
+	               </a>              	
+              	</div>        
             </div>
             <div  th:unless = " ${!esamiStudente.contains(esame)}">
-               <p th:text=" ${esame.dataEsame} + ${esame.descrizioneEsame} + ${esame.tipoSessione} + ${esame.professore.cognomeProfessore}">Dati Esame</p>
+            	<div th:if = " ${esame.corso.professore != null}">
+              		 <p th:text=" ${esame.dataEsame} + ' ' +  ${esame.descrizioneEsame} + ' ' + ${esame.tipoSessione} + ' ' + ${esame.corso.professore.cognomeProfessore}">Dati Esame</p>
+              	</div>
+              	<div th:unless = " ${esame.corso.professore != null}"> 
+              		<p th:text=" ${esame.dataEsame} + ' ' + ${esame.descrizioneEsame} + ' ' + ${esame.tipoSessione} + ' Professore ' + 'non ' + 'ancora ' + 'registrato'">Dati Esame</p>
+              	</div>
             </div>
          </div>
       </div>

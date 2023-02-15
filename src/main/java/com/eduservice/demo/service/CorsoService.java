@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.eduservice.demo.model.Corso;
 import com.eduservice.demo.model.Esame;
+import com.eduservice.demo.model.Professore;
 import com.eduservice.demo.repository.CorsoRepository;
 
 @Service
@@ -20,18 +21,18 @@ public class CorsoService {
 	
 	@Transactional
 	public void saveCorso( Corso corso) {
-		corsoRepository.save(corso);
+		this.corsoRepository.save(corso);
 	}
 	
 	@Transactional
 	public void deleteCorso(Long id) {
 		Corso corso = corsoRepository.findById(id).get();
-		corsoRepository.delete(corso);
+		this.corsoRepository.delete(corso);
 	}
 	
 	@Transactional
 	public void deleteAllCorsi() {
-		corsoRepository.deleteAll();
+		this.corsoRepository.deleteAll();
 	}
 	
 	@Transactional
@@ -40,7 +41,8 @@ public class CorsoService {
 		corsoUpdate.setNomeCorso(corso.getNomeCorso());
 		corsoUpdate.setProgrammaCorso(corso.getProgrammaCorso());
 		corsoUpdate.setEsami(corso.getEsami());
-		corsoRepository.save(corsoUpdate);
+		corsoUpdate.setProfessore(corso.getProfessore());
+		this.corsoRepository.save(corsoUpdate);
 	}
 	
 	public boolean existsByNomeCorso( String nomeCorso) {
@@ -58,16 +60,33 @@ public class CorsoService {
 		}
 		return corsi;
 	}
-	
-	public void saveEsame(Esame esame, Long idCorso) {
-		Corso corso = corsoRepository.findById(idCorso).get();
-		corso.getEsami().add(esame);
-		corsoRepository.save(corso);
-	}
 
 	public Corso findBynomeCorso(String nomeCorso) {
 		return corsoRepository.findByNomeCorso(nomeCorso);
 	}
 
+	public void saveProfessore(Professore professore, Corso corso) {
+		corso.setProfessore(professore);
+		this.updateCorso(corso);
+	}
+
+	public Corso findByNomeCorso(String nomeCorso) {
+		return corsoRepository.findByNomeCorso(nomeCorso);
+	}
+
+	public void removeProfessore(Long idCorso) {
+		Corso corso = corsoRepository.findById(idCorso).get();
+		corso.setProfessore(null);
+		this.updateCorso(corso);
+	}
+	
+	public List<Esame> findEsamiByCognomeProfessore(Professore professore){
+		List<Corso> corsi = corsoRepository.findCorsoByProfessore(professore);
+		List<Esame> esamiCorsi = new LinkedList<Esame>();
+		for(Corso corso : corsi) {
+			esamiCorsi.addAll(corso.getEsami());
+		}
+		return esamiCorsi;
+	}
 
 }

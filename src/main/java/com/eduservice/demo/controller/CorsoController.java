@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.eduservice.demo.model.Corso;
+import com.eduservice.demo.model.Esame;
 import com.eduservice.demo.service.CorsoService;
+import com.eduservice.demo.service.DipartimentoService;
 import com.eduservice.demo.service.EsameService;
-
+import com.eduservice.demo.service.ProfessoreService;
 import com.eduservice.demo.validator.CorsoValidator;
 
 @Controller
@@ -26,6 +28,12 @@ public class CorsoController {
 
 	@Autowired
 	EsameService esameService;
+
+	@Autowired
+	ProfessoreService professoreService;
+
+	@Autowired
+	DipartimentoService dipartimentoService;
 
 	@Autowired
 	CorsoValidator corsoValidator;
@@ -52,13 +60,14 @@ public class CorsoController {
 	@GetMapping("/corso/add/")
 	public String showFormInserimentoCorso( Model model) {
 		model.addAttribute("esami", esameService.findAll());
+		model.addAttribute("professori", professoreService.findAll());
 		model.addAttribute("corso", new Corso());
 		return "corso/corsoAddForm";
 	}
 
 	@PostMapping("/corso/add/")
 	public String AggiungiCorso(@Valid@ModelAttribute("corso") Corso corso, BindingResult bindingResult,
-			@RequestParam("nomeEsame") String nomeEsame, Model model) {
+			@RequestParam("nomeEsame") String nomeEsame, @RequestParam("cognomeProfessore") String cognomeProfessore, Model model) {
 
 
 
@@ -67,6 +76,9 @@ public class CorsoController {
 		if(!bindingResult.hasErrors()) {
 			if(nomeEsame !=null) {
 				corso.getEsami().add(esameService.findByNomeEsame(nomeEsame));
+			}
+			if(cognomeProfessore != null) {
+				corso.setProfessore(professoreService.findByCognomeProfessore(cognomeProfessore));
 			}
 			model.addAttribute("corso", corso);
 			corsoService.saveCorso(corso);
@@ -79,24 +91,22 @@ public class CorsoController {
 
 	@GetMapping("/corso/delete/{idCorso}")
 	public String deleteCorso(@PathVariable("idCorso") Long id, Model model) {
-		esameService.emptyEsami(id);
 		corsoService.deleteCorso(id);
 		model.addAttribute("singolo", 1); // sto cancellando un signolo corso
 		return "corso/corsoCancellazioneOk";
 	}
 
-	@GetMapping("/corso/delete/")
-	public String deleteAllCorsi(Model model) {
-		corsoService.deleteAllCorsi();
-		model.addAttribute("singolo", 2); //sto cancellando tutti i corsi
-		return "corso/corsoCancellazioneOk";
-	}
-
 	@GetMapping("/corso/delete/{idCorso}/{idEsame}")
 	public String cancellaEsameDalCorso(@PathVariable("idCorso") Long idCorso, @PathVariable("idEsame")Long idEsame, Model model) {
-		Corso corso = corsoService.findById(idCorso);
-		esameService.removeElement(corso, esameService.findById(idEsame));
-		model.addAttribute("singolo", 3); // sto cancellando un esame dalla lista dei corsi
+		esameService.emptyCorso(esameService.findById(idEsame));
+		model.addAttribute("singolo", 2); // sto cancellando un esame dalla lista dei corsi
+		return  "corso/corsoCancellazioneOk";
+	}
+
+	@GetMapping("/professore/delete/{idProfessore}/{idCorso}")
+	public String cancellaCorsoDalProfessore(@PathVariable("idProfessore") Long idProfessore, @PathVariable("idCorso")Long idCorso, Model model) {
+		corsoService.removeProfessore(idCorso);
+		model.addAttribute("singolo",3); // sto cancellando un professore dalla lista dei corsi
 		return  "corso/corsoCancellazioneOk";
 	}
 
@@ -115,25 +125,30 @@ public class CorsoController {
 	public String showCorsoEditForm(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("corso", corsoService.findById(id));
 		model.addAttribute("esami", esameService.findAll());
+		model.addAttribute("professori", professoreService.findAll());
 		return "corso/corsoEditForm";
 	}
 
 	@PostMapping("/corso/edit/{id}")
 	public String AggiornaCorso(@Valid@ModelAttribute("corso") Corso corso,	BindingResult bindingResult, 
-			@RequestParam("nomeEsame") String nomeEsame, Model model) {
-
+			@RequestParam("nomeEsame") String nomeEsame, @RequestParam("cognomeProfessore") String cognomeProfessore, Model model) {
 
 		if(!bindingResult.hasErrors()) {
 			if(nomeEsame != null && esameService.findAll().contains(esameService.findByNomeEsame(nomeEsame))) {
-				corsoService.saveEsame(esameService.findByNomeEsame(nomeEsame), corso.getId());
-				esameService.addCorso(esameService.findByNomeEsame(nomeEsame), corso);
-				corsoService.updateCorso(corso);
-				model.addAttribute("corso", corso);
-				return "corso/corsoEditOk";
+				Esame esame = esameService.findByNomeEsame(nomeEsame);
+				esame.setCorso(corso);
+				esameService.saveEsame(esame);
 			}
+			if(cognomeProfessore != null && professoreService.findAll().contains(professoreService.findByCognomeProfessore(cognomeProfessore)))
+				corsoService.saveProfessore(professoreService.findByCognomeProfessore(cognomeProfessore), corso);
+			corsoService.updateCorso(corso);
+			model.addAttribute("corso", corso);
+			return "corso/corsoEditOk";
 		}
 		model.addAttribute("corso", corso);
 		return "corso/corsoEditErrore";
 	}
+	
+	
 
 }

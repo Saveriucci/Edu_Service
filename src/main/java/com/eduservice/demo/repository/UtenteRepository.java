@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
+
 import com.eduservice.demo.model.Utente;
+
 
 public interface UtenteRepository extends CrudRepository<Utente, Long>{
 	

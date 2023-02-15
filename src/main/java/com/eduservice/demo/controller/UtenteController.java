@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.eduservice.demo.model.Studente;
 import com.eduservice.demo.model.Utente;
-import com.eduservice.demo.service.EsameService;
 import com.eduservice.demo.service.StudenteService;
 import com.eduservice.demo.service.UtenteService;
 import com.eduservice.demo.validator.UtenteValidator;
@@ -31,9 +30,6 @@ public class UtenteController {
 	private StudenteService studenteService;
 
 	@Autowired
-	private EsameService esameService;
-
-	@Autowired
 	private UtenteValidator utenteValidator;
 
 
@@ -47,13 +43,14 @@ public class UtenteController {
 	@PostMapping("/register")
 	public String registerUser(@Valid @ModelAttribute("user") Utente user,
 			BindingResult userBindingResult, Model model) {
-
+		
 		// validazione user
 		utenteValidator.validate(user, userBindingResult);
 		if(!userBindingResult.hasErrors()) {
+			utenteService.saveUtente(user);			//salvo l utente
+			Studente studente = studenteService.saveStudente(user); //salvo lo studente/ la studentessa
+			utenteService.updateUtente(studente);	// lego l utente con lo studente
 			model.addAttribute("user", user);
-			utenteService.saveUtente(user);
-			studenteService.saveStudente(user);
 			return "auth/loginForm";
 		}
 		return "auth/registrationForm";
@@ -73,7 +70,7 @@ public class UtenteController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		Utente utente = utenteService.findByUsername(Integer.valueOf(auth.getName()));
-		Studente studente = studenteService.findByMatricola(utente.getUsername());
+		Studente studente = utente.getStudente();
 
 
 		//getname() = username (stringa)
@@ -81,7 +78,7 @@ public class UtenteController {
 		model.addAttribute("user", utente);
 		model.addAttribute("studente", studente);
 		if(studente != null)
-			model.addAttribute("esami", esameService.findEsamiByIdStudente(studente.getId()));
+			model.addAttribute("esami", studente.getEsami());
 		return "index";
 
 	}

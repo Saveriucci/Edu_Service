@@ -5,29 +5,42 @@
    <body background = "/images/sottofondoPerIlResto.jpg"; background-height: 100vh; background-position: center;  background-repeat: no-repeat;  background-size: cover;> 
    <div th:replace = "fragments/vari.html :: navbar"></div>
    <div class="vh-100" style="height: 950px;" th:object = "${esami}">
-   <center>
-      <div th:each = "esame :${esami}">
-         <!-- Card -->
-         <div class="container-fluid">
-            <div class = "card">
-               <div class="card-body">
-                  <h1 class="card-title" th:text = "${esame.nomeEsame}">Nome Esami</h1>
-                  <p class="card-text" th:text = "${esame.descrizioneEsame}">Descrizione</p>
-                  <a sec:authorize= "hasAuthority('admin')" th:href = "@{'/esame/edit/' + ${esame.id}}" class="btn btn-success">Modifica L' Esame</a>
-                  <a th:href = "@{'/esame/' + ${esame.id}}" class="btn btn-success">Visualizza di Piu</a>
-                  <div sec:authorize= "hasAuthority('generic')">
-                     <div th:if = " ${!esamiStudente.contains(esame)}">
-                        <a  th:href = "@{'/studente/prenota/' + ${studente.id} + '/' + ${esame.id}}" class="btn btn-success">Prenota</a>	
-                     </div>
-                     <div  th:unless = " ${!esamiStudente.contains(esame)}">
-                        <p class="card-text" >Esame gia prenotato</p>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-   </center>
+   	<div th:if = "${!esami.isEmpty()}">
+	   <center>
+	      <div th:each = "esame :${esami}">
+	         <div class="container-fluid">
+	            <div class = "card">
+	               <div class="card-body">
+	               	<div th:if = "${esame.corso != null}">
+	                  <h1 class="card-title" th:text = "${esame.corso.nomeCorso}">Nome Esami</h1>
+	                 </div>
+	                 <div th:unless = "${esame.corso != null}">
+	                 	<h1 class="card-title" th:text = "${esame.nomeEsame}">Nome Esami</h1>
+	                 </div>
+	                  <p class="card-text" th:text = "${esame.descrizioneEsame}">Descrizione</p>
+	                  <a sec:authorize= "hasAuthority('admin')" th:href = "@{'/esame/edit/' + ${esame.id}}" class="btn btn-success">Modifica L' Esame</a>
+	                  <a th:href = "@{'/esame/' + ${esame.id}}" class="btn btn-success">Visualizza di Piu</a>
+	                 <div sec:authorize= "hasAuthority('generic')">
+	                     <div th:if = " ${!(esamiStudente.contains(esame))}">
+	                        <a  th:href = "@{'/studente/prenota/' + ${studente.id} + '/' + ${esame.id}}" class="btn btn-success">Prenota</a>	
+	                     </div>
+	                     <div  th:unless = " ${!(esamiStudente.contains(esame))}">
+	                        <a  th:href = "@{'/studente/cancella/' + ${studente.id} + '/' + ${esame.id}}" class="btn btn-danger">Cancella Prenotazione</a>
+	                     </div>
+	                  </div>
+	               </div>
+	            </div>
+	         </div>
+	      </div>
+	   </center>
+	 </div>
+	 <div th:unless = "${!esami.isEmpty()}">
+		<center>
+		   <h1> non ci sono Esami </h1>
+		   <a sec:authorize= "hasAuthority('admin')" th:href = "@{/default/}" class="btn btn-success">Tona alla HomePage</a>
+		</center>	 	
+	 </div>
+   </div>
    <div th:replace = "fragments/vari.html :: footer"></div>
    </body>
 </html>

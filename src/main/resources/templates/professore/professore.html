@@ -20,7 +20,7 @@
                <div class="divTableRow">
                   <div class="divTableHead">
                      <h3 class ="color">
-                     Nome
+                     Corso
                   </div>
                   <div class="divTableHead">
                      <h3 class ="color">
@@ -43,7 +43,6 @@
                         <p th:text = "${esame.corso.nomeCorso}"> nome Esame</p>
                      </div>
                      <div th:unless = "${esame.corso != null}">
-                        <p th:text = "${esame.nomEsame}"> nome Esame</p>
                         <a th:href="@{'/esame/' + ${esame.id}}";>
                            <p th:text = "${esame.nomEsame}"> nome Esame </p>
                         </a>

@@ -1,16 +1,18 @@
 package com.eduservice.demo.model;
 
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -39,17 +41,15 @@ public class Esame {
 	@Size(min = 6, max = 9) // estiva, invernale, autunnale
 	private String tipoSessione;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	private List<Studente> studenti;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "esame_studente", joinColumns = {  @JoinColumn(name = "esame_id") }, inverseJoinColumns = { @JoinColumn(name = "studente_id")})
+	private Set<Studente> studenti;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	private Professore professore;
-	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private Corso corso;
 	
 	public Esame() {
-		this.studenti = new LinkedList<Studente>();
+		this.studenti = new HashSet<Studente>();
 	}
 
 	public Long getId() {
@@ -91,23 +91,16 @@ public class Esame {
 	public void setTipoSessione(String tipoSessione) {
 		this.tipoSessione = tipoSessione;
 	}
+	
 
-	public List<Studente> getStudenti() {
+	public Set<Studente> getStudenti() {
 		return studenti;
 	}
 
-	public void setStudenti(List<Studente> studenti) {
+	public void setStudenti(Set<Studente> studenti) {
 		this.studenti = studenti;
 	}
 
-	public Professore getProfessore() {
-		return professore;
-	}
-
-	public void setProfessore(Professore professore) {
-		this.professore = professore;
-	}
-	
 	public Corso getCorso() {
 		return corso;
 	}

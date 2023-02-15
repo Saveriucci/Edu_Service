@@ -15,4 +15,5 @@ public interface StudenteRepository extends CrudRepository <Studente, Long>{
 	public List<Studente> findByNomeStudente( String nomeStudente);
 	
 	public List<Studente> findByCognomeStudente( String cognomeStudente);
+	
 }

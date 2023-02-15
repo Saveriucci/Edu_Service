@@ -1,14 +1,14 @@
 package com.eduservice.demo.model;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -28,11 +28,14 @@ public class Studente {
 	@NotNull
 	private int matricolaStudente;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	private List<Esame> esami;
+	@ManyToMany(mappedBy = "studenti")
+	private Set<Esame> esami;
+	
+	@OneToOne
+	private Utente utente;
 	
 	public Studente() {
-		this.esami = new LinkedList<Esame>();
+		this.esami = new HashSet<Esame>();
 	}
 
 	public Long getId() {
@@ -66,15 +69,22 @@ public class Studente {
 	public void setMatricolaStudente(int matricolaStudente) {
 		this.matricolaStudente = matricolaStudente;
 	}
+	
 
-	
-	
-	public List<Esame> getEsami() {
+	public Set<Esame> getEsami() {
 		return esami;
 	}
 
-	public void setEsami(List<Esame> esami) {
+	public void setEsami(Set<Esame> esami) {
 		this.esami = esami;
+	}
+
+	public Utente getUtente() {
+		return utente;
+	}
+
+	public void setUtente(Utente utente) {
+		this.utente = utente;
 	}
 
 	@Override

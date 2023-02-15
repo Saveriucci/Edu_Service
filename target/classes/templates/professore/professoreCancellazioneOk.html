@@ -9,13 +9,13 @@
          <center>
             <h1 color = "green">Il Professore e' stato cancellato con successo!</h1>
             <a th:href = "@{/esame/}" class="btn btn-success">Vai alla lista dei Professori</a>
-            <a th:href = "@{'/default}" class="btn btn-success">Homepage</a>
+            <a th:href = "@{/default}" class="btn btn-success">Homepage</a>
          </center>
       </div>
       <div th:if = "${singolo == 2}">
          <center>
             <h1 color = "green">Tutti i Professori sono stati cancellati!</h1>
-            <a th:href = "@{'/default}" class="btn btn-success">Homepage</a>
+            <a th:href = "@{/default}" class="btn btn-success">Homepage</a>
          </center>
       </div>
    </div>

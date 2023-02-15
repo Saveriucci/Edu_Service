@@ -15,8 +15,19 @@
       <br>
       <p class="text-justify" th:text  ="${corso.programmaCorso}">Descrizione</p>
       <hr>
-      <h2 class="text-center">Esami</h2>
+      <div th:if = "${corso.professore}">
+      	<h2 class="text-center" th:text  ="${corso.professore.nomeProfessore}">Professore</h2>
+      </div>
+      <div th:unless = "${corso.professore}">
+      	<h2 class="text-center">Professore non ancora assegnato</h2>
+      	<a sec:authorize= "hasAuthority('admin')" th:href="@{'/corso/edit/' + ${corso.id}}";>
+        	<p class="text-center"> Aggiungi Professore</p>
+        </a>
+      </div>      
       <br>
+      <hr>
+      <h2 class="text-center">Esami</h2>
+      <br>      
       <div class="container-fluid">
          <div class="divTable tabella">
             <div class="divTableHeading">
@@ -28,10 +39,6 @@
                   <div class="divTableHead">
                      <h3 class ="color">
                      Sessione
-                  </div>
-                  <div class="divTableHead">
-                     <h3 class ="color">
-                     Professore
                   </div>
                   <div class="divTableHead" sec:authorize= "hasAuthority('admin')">
                      <h3 class ="color">
@@ -45,6 +52,7 @@
             </div>
             <div class="divTableBody" >
                <div class="divTableRow" th:each =" esame : ${esami}">
+               
                   <div class="divTableCell">
                      <div th:if = "${esame.dataEsame != null}">
                         <p th:text = "${esame.dataEsame}"> data</p>
@@ -56,6 +64,7 @@
                         </a>
                      </div>
                   </div>
+                  
                   <div class="divTableCell">
                      <div th:if = "${esame.tipoSessione != null}">
                         <p  th:text = "${esame.tipoSessione}"> Sessione</p>
@@ -67,19 +76,7 @@
                         </a>
                      </div>
                   </div>
-                  <div class="divTableCell">
-                     <div th:if = "${esame.professore != null}">
-                        <a th:href="@{'/professore/' + ${esame.professore.id}}";>
-                           <p th:text = "${esame.professore.cognomeProfessore}"> Professore</p>
-                        </a>
-                     </div>
-                     <div th:unless = "${esame.professore != null}">
-                        <p div = "text-right"> professore non ancora prensente</p>
-                        <a sec:authorize= "hasAuthority('admin')" th:href="@{'/esame/edit/' + ${esame.id}}";>
-                           <p> aggiungi Professore</p>
-                        </a>
-                     </div>
-                  </div>
+                  
                   <div class="divTableCell" sec:authorize= "hasAuthority('admin')">
                      <div th:if = "${!esame.studenti.isEmpty()}">
                         <p  th:text = "${esame.studenti.size()}"> Numero Studenti Prenotati</p>
@@ -88,12 +85,14 @@
                         <p div = "text-right"> nessun prenotato</p>
                      </div>
                   </div>
+                  
                   <div class="divTableCell" sec:authorize= "hasAuthority('admin')">
                      <a th:href="@{'/corso/delete/' + ${corso.id} + '/' + ${esame.id}}";>
                         <p> Cancella</p>
                      </a>
                   </div>
-               </div>
+                  
+            	</div>
             </div>
          </div>
       </div>

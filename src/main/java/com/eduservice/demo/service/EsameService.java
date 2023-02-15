@@ -11,15 +11,21 @@ import org.springframework.stereotype.Service;
 
 import com.eduservice.demo.model.Corso;
 import com.eduservice.demo.model.Esame;
-import com.eduservice.demo.model.Professore;
-import com.eduservice.demo.model.Studente;
+import com.eduservice.demo.repository.CorsoRepository;
 import com.eduservice.demo.repository.EsameRepository;
+import com.eduservice.demo.repository.StudenteRepository;
 
 @Service
 public class EsameService {
 
 	@Autowired
 	EsameRepository esameRepository;
+
+	@Autowired
+	CorsoRepository corsoRepository;
+	
+	@Autowired
+	private StudenteRepository studenteRepository;
 
 	@Transactional
 	public void saveEsame(Esame esame) {
@@ -28,13 +34,7 @@ public class EsameService {
 
 	@Transactional
 	public void deleteEsame( Long id) {
-		Esame esame = esameRepository.findById(id).get();
-		esameRepository.delete(esame);
-	}
-
-	@Transactional
-	public void deleteAllEsami() {
-		esameRepository.deleteAll();
+		esameRepository.deleteById(id);
 	}
 
 	@Transactional
@@ -46,23 +46,23 @@ public class EsameService {
 		esameUpdate.setTipoSessione(esame.getTipoSessione());
 		esameRepository.save(esameUpdate);
 	}
-	
+
 	public Esame findByNomeEsame( String nomeEsame) {
 		return esameRepository.findByNomeEsame(nomeEsame);
 	}
-	
+
 	public List<Esame> findByTipoSessione(String tipoSessione){
 		return esameRepository.findByTipoSessione(tipoSessione);
 	}
-	
+
 	public List<Esame> findByDataEsame( Date dataEsame){
 		return esameRepository.findByDataEsame(dataEsame);
 	}
-	
+
 	public Esame findById( Long id) {
 		return esameRepository.findById(id).get();
 	}
-	
+
 	public List<Esame> findAll() {
 		List<Esame> esami = new LinkedList<Esame>();
 		for(Esame esame: esameRepository.findAll()) {
@@ -70,19 +70,7 @@ public class EsameService {
 		}
 		return esami;
 	}
-	
-	public void saveStudente(Studente studente, Long idEsame) {
-		Esame esame = esameRepository.findById(idEsame).get();
-		esame.getStudenti().add(studente);
-		this.updateEsame(esame);
-	}
-	
-	public void saveProfessore( Professore professore , Long idEsame) {
-		Esame esame = esameRepository.findById(idEsame).get();
-		esame.setProfessore(professore);
-		this.updateEsame(esame);
-	}
-	
+
 	public void saveCorso( Corso corso, Long idEsame) {
 		Esame esame = esameRepository.findById(idEsame).get();
 		esame.setCorso(corso);
@@ -92,37 +80,14 @@ public class EsameService {
 		return esameRepository.existsByNomeEsameAndTipoSessioneAndDataEsame(nomeEsame, tipoSessione, dataEsame);
 	}
 
-	public void removeElement(Corso corso, Esame esame) {
+	public void emptyCorso(Esame esame) {
 		esame.setCorso(null);
-		esameRepository.save(esame);
-	}
-	
-	public void removeElement(Professore professore, Esame esame) {
-		esame.setCorso(null);
-		esameRepository.save(esame);
+		this.updateEsame(esame);
 	}
 
-	public void addCorso(Esame esame, Corso corso) {
-		esame.setCorso(corso);
-		esameRepository.save(esame);
+	public void removeStudente(Long id) {
+		for(Esame esame : esameRepository.findAll())
+			esame.getStudenti().remove(studenteRepository.findById(id).get());
+		
 	}
-
-	public List<Esame> findEsamiByIdStudente(Long id) {
-		List<Esame> esami = new LinkedList<Esame>();
-		for( Esame esame: this.findAll()) {
-			for(Studente studente: esame.getStudenti()) {
-				if(studente.getId() == id)
-					esami.add(esame);
-			}
-		}
-		return esami;
-	}
-
-	public void emptyEsami(Long idCorso) {
-		for( Long idEsame : esameRepository.trovaEsamiConIdCorso(idCorso)) {
-			this.findById(idEsame).setCorso(null);
-			this.saveEsame(this.findById(idEsame));
-		}
-	}
-
 }

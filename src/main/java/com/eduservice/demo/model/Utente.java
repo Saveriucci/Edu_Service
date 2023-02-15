@@ -1,10 +1,12 @@
 package com.eduservice.demo.model;
 
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -34,6 +36,9 @@ public class Utente {
 	private String password;
 	
 	private String role;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Studente studente;
 	
 	public Long getId() {
 		return id;
@@ -81,6 +86,14 @@ public class Utente {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public Studente getStudente() {
+		return studente;
+	}
+
+	public void setStudente(Studente studente) {
+		this.studente = studente;
 	}
 
 	

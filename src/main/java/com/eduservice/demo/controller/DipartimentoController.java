@@ -111,12 +111,12 @@ public class DipartimentoController {
 			return "dipartimento/dipartimentoEditFormErrore";
 
 		if(!bindingResult.hasErrors()) {
-			if(nomeCorso != null && corsoService.findAll().contains(corsoService.findBynomeCorso(nomeCorso))) {
+			if(nomeCorso != null && corsoService.findAll().contains(corsoService.findBynomeCorso(nomeCorso)))
 				dipartimentoService.saveCorso(corsoService.findBynomeCorso(nomeCorso), dipartimento.getId());
-				dipartimentoService.updateDipartimento(dipartimento);
-				model.addAttribute("dipartimento", dipartimento);
-				return "dipartimento/dipartimentoEditOk";
-			}
+
+			dipartimentoService.updateDipartimento(dipartimento);
+			model.addAttribute("dipartimento", dipartimento);
+			return "dipartimento/dipartimentoEditOk";
 		}
 		model.addAttribute("dipartimento", dipartimento);
 		return "dipartimento/dipartimentoEditFormErrore";

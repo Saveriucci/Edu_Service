@@ -44,15 +44,7 @@
             <div class="divTableBody" >
                <div class="divTableRow" th:each =" esame : ${esami}">
                   <div class="divTableCell">
-                     <div th:if = "${esame.nomeEsame != null}">
                         <p th:text = "${esame.nomeEsame}"> data</p>
-                     </div>
-                     <div th:unless = "${esame.nomeEsame != null}">
-                        <p> nome Esame non ancora prensente</p>
-                        <a sec:authorize= "hasAuthority('admin')" th:href="@{'/esame/edit/' + ${esame.id}}";>
-                           <p> aggiungi Nome</p>
-                        </a>
-                     </div>
                   </div>
                   <div class="divTableCell">
                      <div th:if = "${esame.dataEsame != null}">
@@ -77,12 +69,12 @@
                      </div>
                   </div>
                   <div class="divTableCell">
-                     <div th:if = "${esame.professore != null}">
-                        <a th:href="@{'/professore/' + ${esame.professore.id}}";>
-                           <p th:text = "${esame.professore.cognomeProfessore}"> Professore</p>
+                     <div th:if = "${esame.corso != null}">
+                        <a th:href="@{'/professore/' + ${esame.corso.professore.id}}";>
+                           <p th:text = "${esame.corso.professore.cognomeProfessore}"> Professore</p>
                         </a>
                      </div>
-                     <div th:unless = "${esame.professore != null}">
+                     <div th:unless = "${esame.corso != null}">
                         <p div = "text-right"> professore non ancora prensente</p>
                         <a sec:authorize= "hasAuthority('admin')" th:href="@{'/esame/edit/' + ${esame.id}}";>
                            <p> aggiungi Professore</p>

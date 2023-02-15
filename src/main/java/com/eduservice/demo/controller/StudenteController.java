@@ -40,7 +40,7 @@ public class StudenteController {
 	@GetMapping("/studente/{id}")
 	public String getStudente( @PathVariable("id") Long id, Model model) {
 		model.addAttribute("studente", studenteService.findById(id));
-		model.addAttribute("esami", esameService.findEsamiByIdStudente(id));
+		model.addAttribute("esami", studenteService.findById(id).getEsami());
 		return "studente/studente";
 	}
 
@@ -52,9 +52,10 @@ public class StudenteController {
 
 	@GetMapping("/studente/prenota/{idStudente}")
 	public String showPrenotazioneEsamiForm(@PathVariable("idStudente") Long idStudente, Model model) {
-		model.addAttribute("studente", studenteService.findById(idStudente));
+		Studente studente = studenteService.findById(idStudente);
+		model.addAttribute("studente", studente);
 		model.addAttribute("esami", esameService.findAll());
-		model.addAttribute("esamiStudente", esameService.findEsamiByIdStudente(idStudente));
+		model.addAttribute("esamiStudente", studente.getEsami());
 		return "studente/studentePrenotazione";
 	}
 
@@ -62,10 +63,10 @@ public class StudenteController {
 	public String prenotazioneEsami(@PathVariable("idStudente") Long idStudente, @PathVariable("idEsame") Long idEsame, Model model) {
 		Studente studente = studenteService.findById(idStudente);
 		Esame esame = esameService.findById(idEsame);
-		studente.getEsami().add(esame);
 		esame.getStudenti().add(studente);
+		//studente.getEsami().add(esame);
 		esameService.updateEsame(esame);
-		studenteService.saveStudente(studente);
+		//studenteService.updateStudente(studente);
 		model.addAttribute("studente", studente);
 		return  "studente/studentePrenotazioneOk";
 	}
@@ -74,9 +75,7 @@ public class StudenteController {
 	public String cancellaEsami(@PathVariable("idStudente") Long idStudente, @PathVariable("idEsame")Long idEsame, Model model) {
 		Studente studente = studenteService.findById(idStudente);
 		Esame esame = esameService.findById(idEsame);
-		studente.getEsami().remove(esame);
 		esame.getStudenti().remove(studente);
-		studenteService.updateStudente(studente);
 		esameService.updateEsame(esame);
 		model.addAttribute("studente", studente);
 		return  "studente/studenteCancellazioneEsameOk";
@@ -123,27 +122,13 @@ public class StudenteController {
 
 	@GetMapping("/studente/delete/{id}")
 	public String deleteStudente(@PathVariable("id") Long id, Model model) {
-		if(!studenteService.findById(id).getEsami().isEmpty()) {
-			model.addAttribute("studente", studenteService.findById(id));
-			return "studente/studenteCancellazioneErrore";
-		}
-		else {
-			studenteService.deleteStudente(id);
-			utenteService.deleteUtente(studenteService.findById(id).getMatricolaStudente());
-			model.addAttribute("singolo", 1); // sto cancellando un signolo corso
-			return "studente/studenteCancellazioneOk";
-		}
-	}
-
-	@GetMapping("/studente/delete/")
-	public String deleteAllStudenti(Model model) {
-		studenteService.deleteAllStudenti();
-		utenteService.deleteAll();
-		model.addAttribute("singolo", 2); //sto cancellando tutti i corsi
+		//int matricola = studenteService.findById(id).getMatricolaStudente();
+		esameService.removeStudente(id);
+		utenteService.deleteUtente(studenteService.deleteStudente(id));
+		model.addAttribute("singolo", 1);
 		return "studente/studenteCancellazioneOk";
 	}
 
-	//il model singolo mi serve per il template di cancellazione
 
 	//AGGIORNAMENTO
 
@@ -155,20 +140,21 @@ public class StudenteController {
 	}
 
 	@PostMapping("/studente/edit/{id}")
-	public String AggiornaProfessore(@Valid@ModelAttribute("studente") Studente studente, BindingResult bindingResult,
+	public String AggiornaStudente(@Valid@ModelAttribute("studente") Studente studente, BindingResult bindingResult,
 			@RequestParam("nomeEsame") String nomeEsame, Model model) {
-
+		
 		if(!bindingResult.hasErrors()) {
 
 			if(nomeEsame != null && esameService.findAll().contains(esameService.findByNomeEsame(nomeEsame))) {
 				Esame esame = esameService.findByNomeEsame(nomeEsame);
-				//studente.getEsami().add(esame);
+				studente.getEsami().add(esame);
 				esame.getStudenti().add(studente);
 				esameService.updateEsame(esame);
-				studenteService.updateStudente(studente);
-				model.addAttribute("studente", studente);
-				return "studente/studenteEditOk";
+				
 			}
+			studenteService.updateStudente(studente);
+			model.addAttribute("studente", studente);
+			return "studente/studenteEditOk";
 		}
 		model.addAttribute("studente", studente);
 		return "studente/studenteEditErrore";

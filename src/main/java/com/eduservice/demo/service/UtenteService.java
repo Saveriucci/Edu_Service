@@ -64,6 +64,7 @@ public class UtenteService {
 		Utente utente = utenteRepository.findByUsername(studente.getMatricolaStudente());
 		utente.setNome(studente.getNomeStudente());
 		utente.setCognome(studente.getCognomeStudente());
+		utente.setStudente(studente);
 		utenteRepository.save(utente);
 	}
 	

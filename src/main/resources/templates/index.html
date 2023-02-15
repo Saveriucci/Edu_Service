@@ -6,7 +6,7 @@
    <div th:replace = "fragments/vari.html :: navbar"></div>
    <div class="h-100 d-inline-block" style="height: 950px;">
       <div th:if="${!(user.role == 'admin')}">
-         <h1> I Tuoi Esami Prenotati: </h1>
+         <h1 class ="text-center"> I Tuoi Esami Prenotati </h1>
          <div th:if="${!esami.isEmpty()}">
             <div class="container-fluid">
                <div class="divTable tabella">
@@ -52,25 +52,28 @@
                            </div>
                         </div>
                         <div class="divTableCell">
-                           <div th:if = "${esame.professore != null}">
-                              <p th:text = "${esame.professore.cognomeProfessore}"> Professore</p>
+                           <div th:if = "${esame.corso.professore != null}">
+                              <p th:text = "${esame.corso.professore.cognomeProfessore}"> Professore</p>
                            </div>
-                           <div th:unless = "${esame.professore != null}">
+                           <div th:unless = "${esame.corso.professore != null}">
                               <p div = "text-right"> professore non ancora prensente</p>
                            </div>
                         </div>
                      </div>
                   </div>
-                  <center>
-                  <a th:href = "@{'/studente/' + ${studente.id}}" class="btn btn-success">vai al tuo Profilo</a>
-                  <a th:href = "@{'/studente/prenota/' + ${studente.id}}" class="btn btn-success">Prenota Esami</a>
-                  <center>
-               </div>
-               <div th:unless="${!esami.isEmpty()}">
-                  <h4>
-                  Non hai esami prenotati</h1>
                </div>
             </div>
+            <center>
+            <a th:href = "@{'/studente/' + ${studente.id}}" class="btn btn-success">vai al tuo Profilo</a>
+            <a th:href = "@{'/studente/prenota/' + ${studente.id}}" class="btn btn-success">Prenota Esami</a>
+            <center>
+         </div>
+         <div th:unless="${!esami.isEmpty()}">
+            <center>
+               <h4> Non hai esami prenotati</h4>
+               <a th:href = "@{'/studente/' + ${studente.id}}" class="btn btn-success">vai al tuo Profilo</a>
+               <a th:href = "@{'/studente/prenota/' + ${studente.id}}" class="btn btn-success">Prenota Esami</a>
+            </center>
          </div>
       </div>
       <div th:unless = "${!(user.role == 'admin')}">

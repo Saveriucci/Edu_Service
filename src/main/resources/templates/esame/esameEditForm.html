@@ -37,22 +37,6 @@
                                  <input type="text" th:field="*{tipoSessione}" id="tipoSessione" placeholder="tipoSessione" class="form-control form-control-lg" />
                                  <div  id = "errori" th:if="${#fields.hasErrors('tipoSessione')}" th:errors="*{tipoSessione}"></div>
                               </div>
-                              <div class="form-outline mb-4" th:object = "${corsi}">
-                                 <label class="form-label">Lista dei Corsi</label>		                
-                                 <select>
-                                    <option value="">Corsi</option>
-                                    <option th:each="corso : ${corsi}" th:text="${corso.nomeCorso} + ${corso.cfu}"></option>
-                                 </select>
-                                 <input type="text" id="nomeCorso" placeholder=" inserire nomeCorso"  name = "nomeCorso" class="form-control form-control-lg" />
-                              </div>
-                              <div class="form-outline mb-4" th:object = "${professore}">
-                                 <label class="form-label">Seleziona Un Professore</label>		                
-                                 <select>
-                                    <option value="">Seleziona Un Professore</option>
-                                    <option th:each="professore : ${professori}" th:text="${professore.cognomeProfessore}"> </option>
-                                    <input type="text" id="nomeProfessore" placeholder=" inserire cognomeProfessore"  name = "cognomeProfessore" class="form-control form-control-lg" />
-                                 </select>
-                              </div>
                               <div class="d-flex justify-content-center">
                                  <a th:href = "@{'/esame/' + ${esame.id}}" role= "button" class="btn btn-danger btn-block btn-lg gradient-custom-4 text-body">Annulla</a>
                               </div>

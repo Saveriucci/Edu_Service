@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.eduservice.demo.model.Corso;
 import com.eduservice.demo.model.Dipartimento;
+import com.eduservice.demo.repository.CorsoRepository;
 import com.eduservice.demo.repository.DipartimentoRepository;
 
 @Service
@@ -17,6 +18,9 @@ public class DipartimentoService {
 
 	@Autowired
 	private DipartimentoRepository dipartimentoRepository;
+	
+	@Autowired
+	private CorsoRepository corsoRepository;
 	
 	@Transactional
 	public void saveDipartimento( Dipartimento dipartimento) {
@@ -38,7 +42,6 @@ public class DipartimentoService {
 	public void updateDipartimento( Dipartimento dipartimento) {
 		Dipartimento dipartimentoUpdate = dipartimentoRepository.findById(dipartimento.getId()).get();
 		dipartimentoUpdate.setNomeDipartimento(dipartimento.getNomeDipartimento());
-		dipartimentoUpdate.setCorsi(dipartimento.getCorsi());
 		dipartimentoRepository.save(dipartimentoUpdate);
 	}
 	
@@ -57,9 +60,18 @@ public class DipartimentoService {
 		return dipartimenti;
 	}
 	
+	@Transactional
 	public void saveCorso(Corso corso, Long idDipartimento) {
 		Dipartimento dipartimento = dipartimentoRepository.findById(idDipartimento).get();
 		dipartimento.getCorsi().add(corso);
 		dipartimentoRepository.save(dipartimento);
+	}
+
+	public void emptyCorso(Long idCorso) {
+			for(Dipartimento dipartimento : dipartimentoRepository.findAll()) {
+				dipartimento.getCorsi().remove(corsoRepository.findById(idCorso).get());
+				this.updateDipartimento(dipartimento);
+			}
+			
 	}
 }
